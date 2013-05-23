@@ -32,6 +32,7 @@ ToGather::Application.routes.draw do
   #     resources :comments, :sales
   #     resource :seller
   #   end
+  resources :calendar
   resources :events
   
   resources :users do

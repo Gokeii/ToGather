@@ -15,4 +15,3 @@
 //= require jquery-ui
 //= require fullcalendar
 //= require twitter/bootstrap
-//= require_tree .

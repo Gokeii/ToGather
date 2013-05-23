@@ -1,0 +1,8 @@
+<dl class="dl-horizontal">
+	<dt><span class="label">title</span></dt>
+	<dd><%= @event.title %></dd>
+	<dt><span class="label">description</span></dt>
+	<dd><%= simple_format(@event.description) %></dd>
+</dl>
+
+<p><%= link_to 'back to calendar', '/' %></p>

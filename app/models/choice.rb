@@ -1,6 +1,6 @@
-class Invitation < ActiveRecord::Base
+class Choice < ActiveRecord::Base
   # attr_accessible :title, :body
-  has_one :reply
+  has_many :replies
   belongs_to :event
 
 end

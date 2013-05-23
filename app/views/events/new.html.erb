@@ -1,0 +1,65 @@
+<%= javascript_include_tag params[:controller] %>
+
+<form class="form" action="/events" method="post">
+
+  <div class="tabbable tabs-left">
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#lA" data-toggle="tab">General</a></li>
+      <li><a href="#lB" data-toggle="tab">Time</a></li>
+      <li><a href="#lC" data-toggle="tab">Invite</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="lA">
+
+        <legend>General information</legend>
+
+        <label for="inputTitle">Title</label>
+        <input class="input-xlarge" type="text" id="inputTitle" placeholder="Title" name="title">
+
+        <label for="inputLocation">Location</label>
+        <input class="input-xlarge" type="text" id="inputLocation" placeholder="Location" name="location">
+
+        <label for="inputDesciption">Description</label>
+        <textarea class="input-xxlarge" rows="5" id="inputDesciption" placeholder="Description" name="description"></textarea>
+
+        <label for="inputName">Your name</label>
+        <input class="input-xlarge" type="text" id="inputName" placeholder="Your name" name="name">
+
+        <label for="inputEmail">Email</label>
+        <input class="input-xlarge" type="text" id="inputEmail" placeholder="Email" name="email">
+
+      </div>
+
+      <div class="tab-pane" id="lB">
+
+        <legend>Your time proposals</legend>
+        <span class="help-block">Click on the dates you would like to choose and select a time range to add a new time proposal.</span>
+        <div class="row-fluid">
+          <div class="span4">
+            <ul id="choices" class="unstyled">
+            </ul>
+          </div>
+          <div id="calendar" class="span8"></div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane" id="lC">
+        <legend>Invitation information</legend>
+
+        <label for="inputEmails">Emails</label>
+        <textarea class="input-xxlarge" rows="5" id="inputEmails" placeholder="Emails you would like to send." name="emails"></textarea>
+        <span class="help-block">Separate multiple e-mail recipients by semicolons(;).</span>
+
+        <button type="submit" class="btn">Finish</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>

@@ -1,5 +1,8 @@
 class Event < ActiveRecord::Base
   # attr_accessible :title, :body
+  has_many :choices
+  has_many :invitations
+  belongs_to :user
   
   scope :between, lambda {|start_time, end_time|
     { :conditions => ["? < start < ?", Event.format_date(start_time), Event.format_date(end_time)] }
@@ -18,7 +21,7 @@ class Event < ActiveRecord::Base
   	:end => self.end.rfc822,
   	:allDay => self.all_day,
   	:recurring => false,
-  	:url => Rails.application.routes.url_helpers.event_path(id),
+  	:url => Rails.application.routes.url_helpers.event_path(self),
   }
   end
 end

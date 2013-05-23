@@ -27,6 +27,7 @@ $(document).ready(function() {
 					},
 					true // make the event "stick"
 				);
+				window.location.href = '/events/new';
 			}
 			calendar.fullCalendar('unselect');
 		},

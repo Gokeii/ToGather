@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130515134253) do
+ActiveRecord::Schema.define(:version => 20130523055237) do
+
+  create_table "choices", :force => true do |t|
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "number"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "event_id"
+    t.integer  "invitation_id"
+  end
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -21,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20130515134253) do
     t.boolean  "all_day"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "user_id"
   end
 
   create_table "invitations", :force => true do |t|
@@ -28,11 +39,11 @@ ActiveRecord::Schema.define(:version => 20130515134253) do
     t.string   "email"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "event_id"
   end
 
   create_table "replies", :force => true do |t|
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
