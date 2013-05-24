@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="background-color:#fdfdfd;height:100%!important;margin:0;padding:0;width:100%!important">
+		<tbody>
+			<tr>
+				<td align="center" valign="top">
+					<table border="0" cellpadding="0" cellspacing="0" width="480" style="background-color:#fdfdfd"><tbody>
+						<tr>
+							<td colspan="4" height="28"></td>
+						</tr>
+
+						<tr>
+							<td valign="top" style="border-top: 1px #e0e7f0 solid; background-color: #f5f9fd; font-size: 16px; text-align: left">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td valign="top" style="padding: 20px 15px 0 15px;">
+												<div style="color: #222222; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 25px; text-align: left">
+													Hi there,
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td valign="top" style="background-color: #f5f9fd; font-size: 16px; text-align: left">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td valign="top" style="padding-left: 15px; padding-right: 15px;">
+												<div style="color: #575757; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 18px; text-align: left">
+													&nbsp;
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table> 
+							</td>
+						</tr>
+
+						<tr>
+							<td valign="top" style="padding:0 15px 20px 15px; background-color: #f5f9fd; font-size: 16px; text-align: left">
+
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td valign="top">
+												<div style="color: #575757; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 25px; text-align: left">
+													<%= @user.name %> (<%= @user.email %>) invites you to participate in the ToGather poll <span style="color:#222222">"<%= @title %>"</span>.
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</td>
+						</tr>
+
+						<tr>
+							<td valign="top" style="padding:0 15px 18px 15px; background-color: #f5f9fd; font-size: 16px; text-align: left">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td valign="top" style="padding: 8px 0 8px 14px; border-left: 3px #d0e3fb solid;">
+												<div style="color: #222222; font-family: Courier, 'Courier New', monospace; font-size: 15px; line-height: 22px; text-align: left">
+													<%= @user.name %> says:
+												</div>
+												<div style="color: #575757; font-family: Courier, 'Courier New', monospace; font-size: 15px; line-height: 22px; text-align: left">
+													<%= @description %>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table> 
+							</td>
+						</tr>
+
+						<tr>
+							<td style="background-color:#dfecfc">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td colspan="3" valign="top" width="15" height="10"></td>
+										</tr>
+										<tr style="line-height: 0">
+											<td>
+												<table style="border-spacing: 14px 0px">
+													<tbody><tr>
+
+														<td style="font-family: 'Helvetica Neue',Arial,sans-serif; font-size: 14px; line-height: 18px; padding-left: 7px; padding-right: 7px; padding-top: 4px; padding-bottom: 4px; margin-left: 18px; margin-right: 3px; background: #0066dd; font-weight: bold; -webkit-box-shadow: 0px 0px 2px 0 rgb(0, 0, 0.28), inset 0px 2px 0px 0 rgba(255, 255, 255, 0.30); box-shadow: 0px 0px 2px 0 rgb(0, 0, 0.28), inset 0px 2px 0px 0 rgba(255, 255, 255, 0.30); border-radius: 3px; ">
+															<a style="text-decoration: none; color: white;" href="<%= @link %>" target="_blank">Participate&nbsp;now</a>
+														</td>
+
+													</tr>
+												</tbody></table>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="3" valign="top" width="15" height="10"></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td valign="top" style="padding:15px; font-size: 14px; text-align: left; border: 1px #DFECFC solid;">
+								
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td valign="top">
+												<div style="color: #575757; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px; line-height: 22px;">
+													<span style="color:#222222">What is ToGather?</span> ToGather is a web service that helps <%= @user.name %> to find a suitable date for meeting with a group of people.
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								
+							</td>
+						</tr>
+
+					</tbody></table>
+					<br>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

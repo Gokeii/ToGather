@@ -31,9 +31,19 @@ class EventsController < ApplicationController
 			choice.end_time = params["choice-end-"+i.to_s]
 			choice.number = i
 			choice.save
-		end		
+		end
+
+		emails = params[:emails]
+		invitations_count = emails.split(',').length
+		1.upto(invitations_count) do |i|
+			invitation = event.invitations.build
+			invitation.email = emails.split(',')[i-1]
+			invitation.save
+		end
 
 		event.save
+
+		UserMailer.invite(current_user, emails, event.title, event.description, event_path(event)).deliver
 
 		redirect_to calendar_index_path
 	end
