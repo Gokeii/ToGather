@@ -9,6 +9,18 @@ class EventsController < ApplicationController
 
 	def show
 		@event = Event.find(params[:id])
+
+		invitations = @event.invitations
+		@replies_count = 0;
+		1.upto(invitations.length) do |i|
+			@replies_count += 1 unless invitations[i-1].reply.nil?
+		end
+
+		# wait for implement
+		@comments_count = 0;
+
+		@latest_activity = @event.updated_at
+
 	end
 
 	def new
@@ -19,6 +31,7 @@ class EventsController < ApplicationController
 		event = Event.new
 		event.title = params[:title]
 		event.description = params[:description]
+		event.location = params[:location]
 		event.start = 1.day.ago
 		event.end = Time.now
 		event.all_day = false
@@ -43,8 +56,13 @@ class EventsController < ApplicationController
 
 		event.save
 
-		UserMailer.invite(current_user, emails, event.title, event.description, event_path(event)).deliver
+		UserMailer.invite(current_user, emails, event.title, event.description, event_url(event)).deliver
 
-		redirect_to calendar_index_path
+		redirect_to event_path(event)
+	end
+
+	def notification
+		@reply_name = params[:reply_name]
+		@event_id = params[:event_id]
 	end
 end

@@ -1,9 +1,177 @@
-<dl class="dl-horizontal">
-	<dt><span class="label">title</span></dt>
-	<dd><%= @event.title %></dd>
-	<dt><span class="label">description</span></dt>
-	<dd><%= simple_format(@event.description) %></dd>
-</dl>
+<%= javascript_include_tag params[:controller] %>
 
-<p><%= link_to 'back to calendar', '/' %></p>
+<div style="padding-left:10px;background-color:#f0f0f0">
+	<h2><%= @event.title %></h2>
+	<div class="clearfix" style="color:#6f6f6f">
+		<div style="float:left;" title="<%= @replies_count %> participants">
+			<i class="icon-user"></i>
+			<span><%= @replies_count %></span>
+		</div>
 
+		<span style="padding:0 5px; float:left;"> | </span>
+
+		<div style="float:left;" title="<%= @comments_count %> comments">
+			<i class="icon-comment"></i>
+			<span><%= @comments_count %></span>
+		</div>
+
+		<span style="padding:0 5px; float:left;"> | </span>
+
+		<div style="float:left;" title="latest activity">
+			<i class="icon-time"></i>
+			<span><%= time_ago_in_words(@latest_activity) %>&nbspago</span>
+		</div>
+	</div>
+
+	<div class="clearfix" style="padding-top:3px;">
+		<span>Where:&nbsp&nbsp&nbsp<%= @event.location%></span>
+	</div>
+
+	<div class="clearfix" style="padding-top:22px;">
+		<span style="font-size:18px;"><%= @event.description%></span>
+	</div>
+</div>
+
+<div class="tabbable">
+	<ul class="nav nav-tabs" style="padding-top:10px; background-color:#f0f0f0; font-size:18px;">
+		<li class="active"><a href="#tab1" data-toggle="tab">choices</a></li>
+		<li><a href="#tab2" data-toggle="tab">administration</a></li>
+	</ul>
+	<div class="tab-content" style="padding-left:10px;">
+		<div class="tab-pane active" id="tab1">
+			<form id="show_form" action="/replies" method="post">
+				<table id="choices_table" class="table table-bordered">
+					<tbody>
+						<tr>  <!-- month year head-->
+							<th></th>
+							<%  
+							choices = @event.choices
+							i = 0
+							loop do
+								tmp = choices[i].start_time
+								count = 1
+
+								loop do
+									if (i+1 < choices.length) && (tmp.month == choices[i+1].start_time.month) && (tmp.year == choices[i+1].start_time.year)
+										count += 1
+										i += 1
+									else
+										break
+									end
+								end
+
+								%>
+								<th colspan="<%= count %>"><%= tmp.strftime("%b")+" "+tmp.year.to_s %></th>
+								<%
+
+								if i < choices.length-1
+									i += 1
+								else 
+									break
+								end
+							end
+							%>
+						</tr>
+						<tr> <!-- day head -->
+							<th></th>
+							<%  
+							choices = @event.choices
+							i = 0
+							loop do
+								tmp = choices[i].start_time
+								count = 1
+								loop do
+									if (i+1 < choices.length) && (tmp.day == choices[i+1].start_time.day) && (tmp.month == choices[i+1].start_time.month) && (tmp.year == choices[i+1].start_time.year)
+										count += 1
+										i += 1
+									else
+										break
+									end
+								end
+
+								%>
+								<th colspan="<%= count %>"><%= tmp.strftime("%a")+" " + tmp.day.to_s%></th>
+								<%
+
+								if i < choices.length-1
+									i += 1
+								else 
+									break
+								end
+							end
+							%>
+						</tr>
+						<tr> <!-- time head -->
+							<th></th>
+							<%
+							@event.choices.each do |choice|
+								%><th colspan="1"><%= choice.start_time.strftime("%l:%M %P") %></th><%
+							end
+							%>
+						</tr>
+						<!-- replies -->
+						<%
+						@event.replies.each do |reply|
+							numbers = Array.new
+							reply.choices.each {|choice| numbers.push(choice.number) }
+							%>
+							<tr>
+								<td><span><%= reply.name %></span></td>
+								<%
+								1.upto(@event.choices.length) do |i|
+									if numbers.include?(i)
+										%>
+										<td class="success"><i class="icon-ok"></i></td>
+										<% 
+									else 
+										%>
+										<td class="error"><i class="icon-remove"></i></td>
+										<%
+									end
+								end
+								%>
+							</tr>
+							<%
+						end
+						%>
+						<tr>
+							<td>
+								<input id="reply_name" type="text" name="name" maxlength="64" style="height:19px;margin-bottom:0px;padding:2px 6px 2px 6px;width:116px;">
+							</td>
+							<%
+							1.upto(@event.choices.length) do |i|
+								%>
+								<td>
+									<input type="checkbox" name="choices[<%= i %>]">
+								</td>
+								<%
+							end
+							%>
+						</tr>
+						<tr>
+							<td>
+							</td>
+							<%
+							0.upto(@event.choices.length-1) do |i|
+								%>
+								<td><%= @event.choices[i].replies.length %></td>
+								<%
+							end
+							%>
+						</tr>
+					</tbody>
+				</table>
+				<input type="hidden" name="event_id" value="<%= @event.id %>">
+				<div>
+					<div style="float:right;">
+						<input class="btn" id="cantMakeIt" type="submit" value="Can't make it">
+						<input class="btn btn-primary" id="save" type="submit" value="Save">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="tab-pane" id="tab2">
+			<p>Howdy, I'm in Section 2.</p>
+		</div>
+	</div>
+</div>

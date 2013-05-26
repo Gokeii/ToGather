@@ -6,9 +6,45 @@
   =require twitter-bootstrap-static/fontawesome
   */
 body{
-  padding-top: 60px;
-  padding-bottom:10px;
+	padding-top: 60px;
+	padding-bottom:10px;
+	background-color: #f7fafe;
 }
 .container{
 	width: 940px;
+}
+body > div.container{
+	padding: 10px;
+	background-color: #fff;
+	min-height: 580px;
+
+  /* border-radius */
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+
+  /* box-shadow */
+  -webkit-box-shadow: rgba(0,0,0,0.8) 0px 0 10px;
+  -moz-box-shadow: rgba(0,0,0,0.8) 0 0 10px;
+  box-shadow: rgba(0,0,0,0.8) 0 0 10px;
+}
+
+
+/************************event show css******************************/
+.table th{
+  padding: 4px 4px 4px 4px;
+}
+.table td{
+  height: 25px;
+}
+.table tr td:first-child{
+  width: 100px;
+}
+.table tr td:not(:first-child){
+  
+}
+
+/************************event notification css******************************/
+.green{
+  color: #5cad5c;
 }

@@ -2,6 +2,7 @@ class Event < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :choices
   has_many :invitations
+  has_many :replies
   belongs_to :user
   
   scope :between, lambda {|start_time, end_time|

@@ -1,6 +1,6 @@
 <%= javascript_include_tag params[:controller] %>
 
-<form class="form" action="/events" method="post">
+<form id="new_form" class="form" action="/events" method="post">
 
   <div class="tabbable tabs-left">
 
@@ -38,11 +38,11 @@
         <legend>Your time proposals</legend>
         <span class="help-block">Click on the dates you would like to choose and select a time range to add a new time proposal.</span>
         <div class="row-fluid">
-          <div class="span4">
+          <div class="span5">
             <ul id="choices" class="unstyled">
             </ul>
           </div>
-          <div id="calendar" class="span8"></div>
+          <div id="calendar" class="span7"></div>
         </div>
 
       </div>

@@ -1,5 +1,6 @@
 $(document).ready(function() {
-/***********************initialize calendar********************************/
+	/*************************event new part**********************************/
+	/***********************initialize calendar*******************************/
 	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
@@ -10,10 +11,10 @@ $(document).ready(function() {
 		selectable: true,
 		selectHelper: true,
 		defaultView: 'month',
-		height:466,
+		// height:466,
 
 		header: {
-			left: 'prev,next today',
+			left: 'prev,next',
 			center: 'title',
 			right: 'month,agendaDay'
 		},
@@ -21,7 +22,7 @@ $(document).ready(function() {
 		select: function(start, end, allDay) {
 			if (allDay) {
 				$(this).css('background-color', 'rgb(228,240,253)');
-       	calendar.fullCalendar('changeView', 'agendaDay').fullCalendar('gotoDate', start);
+				calendar.fullCalendar('changeView', 'agendaDay').fullCalendar('gotoDate', start);
 			}
 			else {
 				var formattedStart = $.fullCalendar.formatDate(start, 'HH:mm ddd, MMMM d, yyyy');
@@ -35,21 +36,21 @@ $(document).ready(function() {
 						anyEarlier = true;
 						$(this).parent().parent().parent().parent().after(' \
 							<li> \
-								<div class="input-prepend span12"> \
-		  						<button class="btn" type="button"><i class="icon-trash"></i></button> \
-		  						<div class="input-prepend"> \
-			  						<div> \
-			  							<span class="add-on">start</span> \
-			  							<input type="text" disabled value="' + formattedStart + '"> \
-			  							<input class="choice-start" type="hidden" value="' + start + '"> \
-										</div> \
-										<div> \
-			  							<span class="add-on">end&nbsp</span> \
-			  							<input type="text" disabled value="' + formattedEnd + '"> \
-			  							<input class="choice-end" type="hidden" value="' + end + '"> \
-										</div> \
-									</div> \
-								</div> \
+							<div class="input-prepend span12"> \
+							<button class="btn" type="button"><i class="icon-trash"></i></button> \
+							<div class="input-prepend"> \
+							<div> \
+							<span class="add-on">start</span> \
+							<input type="text" disabled value="' + formattedStart + '"> \
+							<input class="choice-start" type="hidden" value="' + start + '"> \
+							</div> \
+							<div> \
+							<span class="add-on">end&nbsp</span> \
+							<input type="text" disabled value="' + formattedEnd + '"> \
+							<input class="choice-end" type="hidden" value="' + end + '"> \
+							</div> \
+							</div> \
+							</div> \
 							</li>');
 					}
 				});
@@ -57,21 +58,21 @@ $(document).ready(function() {
 				if (!anyEarlier) {
 					$('#choices').prepend(' \
 						<li> \
-							<div class="input-prepend span12"> \
-	  						<button class="btn" type="button"><i class="icon-trash"></i></button> \
-	  						<div class="input-prepend"> \
-		  						<div> \
-		  							<span class="add-on">start</span> \
-		  							<input type="text" disabled value="' + formattedStart + '"> \
-		  							<input class="choice-start" type="hidden" value="' + start + '"> \
-									</div> \
-									<div> \
-		  							<span class="add-on">end&nbsp</span> \
-		  							<input type="text" disabled value="' + formattedEnd + '"> \
-		  							<input class="choice-end" type="hidden" value="' + end + '"> \
-									</div> \
-								</div> \
-							</div> \
+						<div class="input-prepend span12"> \
+						<button class="btn" type="button"><i class="icon-trash"></i></button> \
+						<div class="input-prepend"> \
+						<div> \
+						<span class="add-on">start</span> \
+						<input type="text" disabled value="' + formattedStart + '"> \
+						<input class="choice-start" type="hidden" value="' + start + '"> \
+						</div> \
+						<div> \
+						<span class="add-on">end&nbsp</span> \
+						<input type="text" disabled value="' + formattedEnd + '"> \
+						<input class="choice-end" type="hidden" value="' + end + '"> \
+						</div> \
+						</div> \
+						</div> \
 						</li>');					
 				}
 			}
@@ -86,39 +87,61 @@ $(document).ready(function() {
         $(this).css('background-color', 'rgb(228,240,253)');
       }
     },*/
-	});
+  });
 
 /*****************************delete choice***********************************/
-	$(document).on("click", "li .btn", function() {
-		$(this).parent().parent().remove();
-	});
+$(document).on("click", "li .btn", function() {
+	$(this).parent().parent().remove();
+});
 
 /**************************process before form submit**************************/
-	$('form').submit(function() {
-		var count = 1;
-		$('.choice-start').each(function() {
-			$(this).attr('name', 'choice-start-' + count);
-			count++;
-		});
-
-		count = 1;
-		$('.choice-end').each(function() {
-			$(this).attr('name', 'choice-end-' + count);
-			count++;
-		});
-
-		$('#choices').after('<input name="choices-count" type="hidden" value="' + (count-1) + '">');
-
-		return true;
+$('#new_form').submit(function() {
+	var count = 1;
+	$('.choice-start').each(function() {
+		$(this).attr('name', 'choice-start-' + count);
+		count++;
 	});
+
+	count = 1;
+	$('.choice-end').each(function() {
+		$(this).attr('name', 'choice-end-' + count);
+		count++;
+	});
+
+	$('#choices').after('<input name="choices-count" type="hidden" value="' + (count-1) + '">');
+
+	return true;
+});
 
 /********fix fullcalendar render problem with bootstrap tab********/
 
 $('.nav-tabs > li > a').click(function (e) {
-    e.preventDefault();
-    $(this).tab('show');
-    $('#calendar').fullCalendar('render');
+	e.preventDefault();
+	$(this).tab('show');
+	$('#calendar').fullCalendar('render');
+	$('.fc-header-title h2').attr('style', 'font-size:24px');
+})
+/*************************event new part**********************************/
+
+
+/************************event show part**********************************/
+/******************can't make it button process***************************/
+$('input:checkbox').click(function() {
+	if ($(this).is(':checked')) 
+		$('#cantMakeIt').attr('disabled','disabled');
+	else if (!$('input:checked').length)
+		$('#cantMakeIt').removeAttr('disabled');
+})
+/********************show_form before submit check***********************/
+$('#show_form').submit(function() {
+	if (!$('#reply_name').val()){
+		$('#choices_table').after(' \
+			<div class="alert alert-error"> \
+				<button type="button" class="close" data-dismiss="alert">&times;</button> \
+				Please provide your name. \
+			</div>');
+		return false;
+	}
 })
 
-/*************************************************************************/
 });
