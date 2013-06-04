@@ -1,7 +1,7 @@
 ToGather::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-  config.assets.precompile += %w( jquery.dataTables.min.js jquery-ui-1.8.21.custom.min.js jquery-ui-1.8.21.custom.css bootstrap-datepicker.js fullcalendar.js)
+  config.assets.precompile += %w( calendar.js )
 
   # Code is not reloaded between requests
   config.cache_classes = true
