@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 		events: {
 			//event source
-			url: '/events',
+			url: '/events.json',
 			error: function() {
 				alert('there was an error while fetching events!');
 			},
