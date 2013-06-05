@@ -5,8 +5,8 @@ application.js: application-4b8105df677a0d8b41b4049e14772541.js
 application/index.js: application-4b8105df677a0d8b41b4049e14772541.js
 bootstrap.js: bootstrap-2b9296590073083355a21c8fe0915f73.js
 bootstrap/index.js: bootstrap-2b9296590073083355a21c8fe0915f73.js
-calendar.js: calendar-d4b3e97e630a5073cc64d4a9350c97e6.js
-calendar/index.js: calendar-d4b3e97e630a5073cc64d4a9350c97e6.js
+calendar.js: calendar-f60527066457ad899f95bc9b024f235d.js
+calendar/index.js: calendar-f60527066457ad899f95bc9b024f235d.js
 events.js: events-95249d303dfc3d838d4d0dab11d539e4.js
 events/index.js: events-95249d303dfc3d838d4d0dab11d539e4.js
 replies.js: replies-a7fa98ba2ef09a5dcc079d3f014a4e3c.js
