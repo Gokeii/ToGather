@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   belongs_to :user
   
   scope :between, lambda {|start_time, end_time|
-    { :conditions => ["? < start < ?", Event.format_date(start_time), Event.format_date(end_time)] }
+    { :conditions => ["start BETWEEN ? AND ?", Event.format_date(start_time), Event.format_date(end_time)] }
   }
 
   def self.format_date(date_time)
