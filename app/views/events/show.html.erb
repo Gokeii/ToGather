@@ -47,27 +47,29 @@
 							<%  
 							choices = @event.choices
 							i = 0
-							loop do
-								tmp = choices[i].start_time
-								count = 1
-
+							if choices.length > 0 do
 								loop do
-									if (i+1 < choices.length) && (tmp.month == choices[i+1].start_time.month) && (tmp.year == choices[i+1].start_time.year)
-										count += 1
+									tmp = choices[i].start_time
+									count = 1
+
+									loop do
+										if (i+1 < choices.length) && (tmp.month == choices[i+1].start_time.month) && (tmp.year == choices[i+1].start_time.year)
+											count += 1
+											i += 1
+										else
+											break
+										end
+									end
+
+									%>
+									<th colspan="<%= count %>"><%= tmp.strftime("%b")+" "+tmp.year.to_s %></th>
+									<%
+
+									if i < choices.length-1
 										i += 1
-									else
+									else 
 										break
 									end
-								end
-
-								%>
-								<th colspan="<%= count %>"><%= tmp.strftime("%b")+" "+tmp.year.to_s %></th>
-								<%
-
-								if i < choices.length-1
-									i += 1
-								else 
-									break
 								end
 							end
 							%>
