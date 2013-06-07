@@ -6,6 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
 
 	def create
 		build_resource
+		resource.name = params[:email].split("@").first
 		if resource.save
 			sign_in resource
 			render 	:status => 200,
