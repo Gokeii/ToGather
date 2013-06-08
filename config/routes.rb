@@ -1,11 +1,12 @@
 ToGather::Application.routes.draw do
-  devise_for :users
 
   devise_scope :user do
-    post    'registrations' => 'registrations#create', :as => 'register'
+    post    'users' => 'registrations#create', :as => 'register'
     post    'sessions' => 'sessions#create', :as => 'login'
     delete  'sessions' => 'sessions#destroy', :as => 'logout'
   end
+  devise_for :users
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
