@@ -60,7 +60,17 @@ class EventsController < ApplicationController
 
 		UserMailer.invite(current_user, emails, event.title, event.description, event_url(event)).deliver
 
-		redirect_to event_path(event)
+		respond_to do |format| {
+			format.json { 
+				render :status => 200,
+						   :json   => { :success => true,
+												    :info => "event created",
+												    :data => {event.to_json} 
+											    }
+			}
+			format.html { redirect_to event_path(event) }
+		}
+		
 	end
 
 	def notification
