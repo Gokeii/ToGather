@@ -1,7 +1,7 @@
 ToGather::Application.routes.draw do
 
   devise_scope :user do
-    post    'users' => 'registrations#create', :as => 'register'
+    post    'registrations' => 'registrations#create', :as => 'register'
     post    'sessions' => 'sessions#create', :as => 'login'
     delete  'sessions' => 'sessions#destroy', :as => 'logout'
   end

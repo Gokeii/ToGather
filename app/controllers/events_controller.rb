@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+	before_filter :authenticate_user!, :except => :show
+
 	def index
 		@events = Event.scoped
 		@events = Event.between(params['start'], params['end']) if (params['start'] && params['end'])
