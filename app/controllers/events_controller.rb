@@ -65,8 +65,12 @@ class EventsController < ApplicationController
 		emails.split(',').each do |email|
 			client = User.where(:email => email).first
 			if !client.nil? && !client.device.nil?
-				registration_ids.push(client.device.registration_ids)
+				registration_ids.push(client.device.registration_id)
 			end
+		end
+		if registration_ids.size > 0
+			response = gcm.send_notification(registration_ids, options)
+			Rails.logger.debug('debug::' + response.to_json)
 		end
 
 		UserMailer.invite(current_user, emails, event.title, event.description, event_url(event)).deliver
