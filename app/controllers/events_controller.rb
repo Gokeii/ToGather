@@ -58,6 +58,17 @@ class EventsController < ApplicationController
 
 		event.save
 
+		api_key = 'AIzaSyBjg1TQV-puS06AAREhRnkFj2edW6dPtoE'
+		gcm = GCM.new(api_key)
+		registration_ids = []
+		options = {data: {}, collapse_key: "new invitation"}
+		emails.split(',').each do |email|
+			client = User.where(:email => email).first
+			if !client.nil? && !client.device.nil?
+				registration_ids.push(client.device.registration_ids)
+			end
+		end
+
 		UserMailer.invite(current_user, emails, event.title, event.description, event_url(event)).deliver
 
 		respond_to do |format|

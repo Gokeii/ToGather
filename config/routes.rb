@@ -42,6 +42,7 @@ ToGather::Application.routes.draw do
   resources :calendar
   resources :events
   resources :replies
+  resources :devices
   
   resources :users do
     resources :events do

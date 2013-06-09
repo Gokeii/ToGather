@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
+  has_one :device
   has_many :events
 
   before_save :ensure_authentication_token

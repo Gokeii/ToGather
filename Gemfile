@@ -12,6 +12,7 @@ end
 gem 'pg'
 gem 'devise'
 gem 'fullcalendar-rails'
+gem 'gcm'
 
 
 # Gems used only for assets and not required
