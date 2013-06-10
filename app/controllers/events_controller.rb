@@ -72,7 +72,7 @@ class EventsController < ApplicationController
 				render  :status => 200,
 				:json => 	{ :success => true,
 										:data => { 'title' => @event.title,
-															 'time' => @event.created_at,
+															 'time' => @event.created_at.strftime('%Y-%m-%d'),
 															 'description' => @event.description,
 															 'choices' => choices
 														 } 
