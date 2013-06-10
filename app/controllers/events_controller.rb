@@ -1,22 +1,26 @@
 class EventsController < ApplicationController
+	include ActionView::Helpers::DateHelper
 	before_filter :authenticate_user!, :except => :show
 
 	def index
 		if !params['launch'].nil?
+			I18n.locale = 'zh-CN'
 			@events = {}
 			current_user.events.each do |event|
 				@events[event.id] = {'title' => event.title,
 														 'time' => time_ago_in_words(event.created_at)
 														}
 			end
-
-		elsif !params['invited'].nil?
+			I18n.locale = 'en'
+		elsif !params['invited'].nil?			
+			I18n.locale = 'zh-CN'
 			@events = {}
 			current_user.invitations.each do |invitation|
 				@events[invitation.event.id] = {'title' => invitation.event.title, 
 																				'time' => time_ago_in_words(invitation.event.created_at)
 																			 }
 			end
+			I18n.locale = 'en'
 		else
 			@events = Event.scoped
 			@events = Event.between(params['start'], params['end']) if (params['start'] && params['end'])
