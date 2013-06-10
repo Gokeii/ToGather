@@ -2,8 +2,26 @@ class EventsController < ApplicationController
 	before_filter :authenticate_user!, :except => :show
 
 	def index
-		@events = Event.scoped
-		@events = Event.between(params['start'], params['end']) if (params['start'] && params['end'])
+		if !params['launch'].nil?
+			@events = {}
+			current_user.events.each do |event|
+				@events[event.id] = {'title' => event.title
+														 'time' => time_ago_in_words(event.created_at)
+														}
+			end
+
+		elsif !params['invited'].nil?
+			@events = {}
+			current_user.invitations.each do |invitation|
+				@events[invitation.event.id] = {'title' => invitation.event.title, 
+																				'time' => time_ago_in_words(invitation.event.created_at)
+																			 }
+			end
+		else
+			@events = Event.scoped
+			@events = Event.between(params['start'], params['end']) if (params['start'] && params['end'])
+		end
+
 		respond_to do |format|
 			format.json { render :json => @events }
 		end
@@ -53,6 +71,9 @@ class EventsController < ApplicationController
 		1.upto(invitations_count) do |i|
 			invitation = event.invitations.build
 			invitation.email = emails.split(',')[i-1]
+			invitee = User.where(:email => emails.split(',')[i-1]).first
+			if !invitee.nil?
+				invitation.user = invitee
 			invitation.save
 		end
 
