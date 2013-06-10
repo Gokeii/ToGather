@@ -141,7 +141,7 @@ class EventsController < ApplicationController
 				render :status => 200,
 						   :json   => { :success => true,
 												    :info => "event created",
-												    :data => { :event => event.to_json}
+												    :data => { :id => event.id}
 											    }
 			}
 			format.html {
