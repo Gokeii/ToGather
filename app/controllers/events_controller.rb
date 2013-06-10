@@ -5,7 +5,7 @@ class EventsController < ApplicationController
 		if !params['launch'].nil?
 			@events = {}
 			current_user.events.each do |event|
-				@events[event.id] = {'title' => event.title
+				@events[event.id] = {'title' => event.title,
 														 'time' => time_ago_in_words(event.created_at)
 														}
 			end
@@ -74,6 +74,7 @@ class EventsController < ApplicationController
 			invitee = User.where(:email => emails.split(',')[i-1]).first
 			if !invitee.nil?
 				invitation.user = invitee
+			end
 			invitation.save
 		end
 
