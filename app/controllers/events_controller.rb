@@ -27,7 +27,16 @@ class EventsController < ApplicationController
 		end
 
 		respond_to do |format|
-			format.json { render :json => @events }
+			format.json { 
+				if !params['launch'].nil? || !params['invited'].nil?
+					render 				:status => 200,
+												:json => 	{ :success => true,
+																		:data => @events.to_json
+																	}
+				else 
+					render :json => @events
+				end
+			}
 		end
 	end
 
