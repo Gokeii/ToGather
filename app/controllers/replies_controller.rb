@@ -18,6 +18,14 @@ class RepliesController < ApplicationController
 			end
 		end
 
-		redirect_to events_notification_path({:reply_name => params[:name], :event_id => params[:event_id]})
+		respond_to do |format|
+			format.html redirect_to events_notification_path({:reply_name => params[:name], :event_id => params[:event_id]})
+			format.json {
+				render  :status => 200,
+								:json => 	{ :success => true,
+														:data => {} 
+													}
+			}
+		end		
 	end
 end
