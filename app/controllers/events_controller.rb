@@ -54,6 +54,32 @@ class EventsController < ApplicationController
 
 		@latest_activity = @event.updated_at
 
+		respond_to do |format|
+			format.json {
+				choices = {}
+				@event.choices.each do |choice|
+					names = []
+					choice.replies.each do |reply|
+						names.push(reply.name)
+					end
+					choices[choice.number] = {
+						'time' => choice.start_time.strftime('%Y-%m-%d\n%I:%M %p'),
+						'count' => choice.replies.size,
+						'names' => names
+					}
+				end
+
+				render  :status => 200,
+				:json => 	{ :success => true,
+										:data => { 'title' => @event.title,
+															 'time' => @event.created_at,
+															 'description' => @event.description,
+															 'choices' => choices
+														 } 
+									}
+			}
+			format.html
+		end
 	end
 
 	def new
