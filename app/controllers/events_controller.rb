@@ -107,7 +107,7 @@ class EventsController < ApplicationController
 			choice.save
 		end
 
-		emails = params[:emails]
+		emails = params['emails']
 		invitations_count = emails.split(',').length
 		1.upto(invitations_count) do |i|
 			invitation = event.invitations.build
