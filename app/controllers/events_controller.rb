@@ -151,6 +151,22 @@ class EventsController < ApplicationController
 		
 	end
 
+	def update
+		@event = Event.find(params[:event_id])
+		if !params['is_closed'].nil?
+			@event.is_closed = params['is_closed']
+		end
+
+		respond_to do |format|
+			format.json {
+				render :status => 200,
+						   :json   => { :success => true,
+												    :data => {}
+											    }
+			}
+		end
+	end
+
 	def notification
 		@reply_name = params[:reply_name]
 		@event_id = params[:event_id]
