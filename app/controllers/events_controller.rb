@@ -19,7 +19,7 @@ class EventsController < ApplicationController
 			current_user.invitations.each do |invitation|
 				@events[invitation.event.id] = {'title' => invitation.event.title, 
 																				'time' => time_ago_in_words(invitation.event.created_at),
-																				'is_closed' => event.is_closed
+																				'is_closed' => invitation.event.is_closed
 																			 }
 			end
 			I18n.locale = 'en'
