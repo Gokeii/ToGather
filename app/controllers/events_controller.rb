@@ -155,6 +155,7 @@ class EventsController < ApplicationController
 		@event = Event.find(params[:id])
 		if !params['is_closed'].nil?
 			@event.is_closed = params['is_closed']
+			@event.save
 		end
 
 		respond_to do |format|

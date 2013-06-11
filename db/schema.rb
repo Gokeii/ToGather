@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130611060732) do
+ActiveRecord::Schema.define(:version => 20130611065735) do
 
   create_table "choice_replyships", :force => true do |t|
     t.integer  "choice_id"
@@ -46,11 +46,11 @@ ActiveRecord::Schema.define(:version => 20130611060732) do
     t.datetime "start"
     t.datetime "end"
     t.boolean  "all_day"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "user_id"
     t.string   "location"
-    t.boolean  "is_closed"
+    t.boolean  "is_closed",   :default => false
   end
 
   create_table "invitations", :force => true do |t|
