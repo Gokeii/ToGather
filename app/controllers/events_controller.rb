@@ -8,7 +8,8 @@ class EventsController < ApplicationController
 			@events = {}
 			current_user.events.each do |event|
 				@events[event.id] = {'title' => event.title,
-														 'time' => time_ago_in_words(event.created_at)
+														 'time' => time_ago_in_words(event.created_at),
+														 'is_closed' => event.is_closed
 														}
 			end
 			I18n.locale = 'en'
@@ -17,7 +18,8 @@ class EventsController < ApplicationController
 			@events = {}
 			current_user.invitations.each do |invitation|
 				@events[invitation.event.id] = {'title' => invitation.event.title, 
-																				'time' => time_ago_in_words(invitation.event.created_at)
+																				'time' => time_ago_in_words(invitation.event.created_at),
+																				'is_closed' => event.is_closed
 																			 }
 			end
 			I18n.locale = 'en'
