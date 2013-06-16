@@ -3,4 +3,5 @@ class Choice < ActiveRecord::Base
   has_many :choice_replyships
   has_many :replies, :through => :choice_replyships
   belongs_to :event
+  belongs_to :decision
 end

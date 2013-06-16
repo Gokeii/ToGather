@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130611065735) do
+ActiveRecord::Schema.define(:version => 20130615154813) do
 
   create_table "choice_replyships", :force => true do |t|
     t.integer  "choice_id"
@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(:version => 20130611065735) do
     t.datetime "updated_at",    :null => false
     t.integer  "event_id"
     t.integer  "invitation_id"
+    t.integer  "decision_id"
+  end
+
+  create_table "decisions", :force => true do |t|
+    t.integer  "event_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "devices", :force => true do |t|
@@ -51,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20130611065735) do
     t.integer  "user_id"
     t.string   "location"
     t.boolean  "is_closed",   :default => false
+    t.string   "emails"
   end
 
   create_table "invitations", :force => true do |t|

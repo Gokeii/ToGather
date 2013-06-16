@@ -10,5 +10,6 @@
  *
  *= require_self
  *= require fullcalendar
+ *= require jqplot
  *= require_tree .
  */

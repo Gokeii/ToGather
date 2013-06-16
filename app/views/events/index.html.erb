@@ -1,0 +1,106 @@
+<%= javascript_include_tag params[:controller] %>
+<div id="pollsSubHeader">
+	<h3>Create new poll</h3>
+	<div id="buttonContainer">
+		<div id="scheduleButton">
+			<img src="/assets/schedule.png" style="width:70px; padding-right:20px;">
+			<a class="btn btn-info" href="/events/new">Schedule an event</a>
+		</div>
+	</div>
+</div>
+<div class="headerDivider"></div>
+<div>
+	<h3>Your polls</h3>
+	<table id="tableLaunched"class="table table-hover" style="width:940px; table-layout:fixed;">
+		<thead>
+			<tr>
+				<th style="width:25px;"></th>
+				<th style="width:300px;">Subject</th>
+				<th style="width:150px;">Participants</th>
+				<th style="width:200px;">Latest activity</th>
+				<th></th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<%
+		count = 0 
+		@launched_events.each do |event| 
+			if count < 4
+				if event.is_closed %>
+				<tr class="warning">
+					<td><i class="icon-ok"></i></td>
+			<% else %>
+				<tr class="success">
+					<td><i class="icon-time"></i></td>
+			<% end
+			else
+				if event.is_closed %>
+				<tr class="warning launched-more">
+					<td><i class="icon-ok"></i></td>
+			<% else %>
+				<tr class="success launched-more">
+					<td><i class="icon-time"></i></td>
+			<% end
+			end %>
+
+					<td> <%= link_to event.title, event_path(event) %> </td>
+					<td> <%= event.replies.count %> </td>
+					<td> <%= time_ago_in_words(event.updated_at) %>&nbsp ago </td>
+					<td> <%= link_to "Administer", '/events/' + event.id.to_s + '#admin' %> </td>
+				</tr><%
+			count += 1;
+		end %>
+		</tbody>
+
+	</table>
+		<Button id="btnMoreLaunched"class="pull-right btn">More</Button>
+</div>
+
+<div>
+	<h3>Polls that you have participated in</h3>
+	<table id="tableInvited"class="table table-hover" style="width:940px; table-layout:fixed;">
+		<thead>
+			<tr>
+				<th style="width:25px;"></th>
+				<th style="width:300px;">Subject</th>
+				<th style="width:150px;">Participants</th>
+				<th style="width:200px;">Latest activity</th>
+				<th></th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<%
+		count = 0 
+		@invited_events.each do |event| 
+			if count < 4
+				if event.is_closed %>
+				<tr class="warning">
+					<td><i class="icon-ok"></i></td>
+			<% else %>
+				<tr class="success">
+					<td><i class="icon-time"></i></td>
+			<% end
+			else
+				if event.is_closed %>
+				<tr class="warning invited-more">
+					<td><i class="icon-ok"></i></td>
+			<% else %>
+				<tr class="success invited-more">
+					<td><i class="icon-time"></i></td>
+			<% end
+			end %>
+
+					<td> <%= link_to event.title, event_path(event) %> </td>
+					<td> <%= event.replies.count %> </td>
+					<td> <%= time_ago_in_words(event.updated_at) %>&nbsp ago </td>
+					<td></td>
+				</tr><%
+			count += 1;
+		end %>
+		</tbody>
+
+	</table>
+		<Button id="btnMoreInvited"class="pull-right btn">More</Button>
+</div>

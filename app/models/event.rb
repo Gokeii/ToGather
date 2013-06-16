@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   has_many :choices
   has_many :invitations
   has_many :replies
+  has_one :decision
   belongs_to :user
   
   scope :between, lambda {|start_time, end_time|

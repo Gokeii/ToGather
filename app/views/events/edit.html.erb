@@ -1,0 +1,79 @@
+<%= javascript_include_tag params[:controller] %>
+
+<form id="edit_form" class="form">
+
+  <div class="tabbable tabs-left">
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#General" data-toggle="tab">General</a></li>
+      <li><a href="#Time" data-toggle="tab">Time</a></li>
+      <li><a href="#Invite" data-toggle="tab">Invite</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="General">
+
+        <legend>General information</legend>
+
+        <label for="inputTitle">Title</label>
+        <input class="input-xlarge" type="text" id="inputTitle" placeholder="Title" name="title" value="<%= @event.title %>">
+
+        <label for="inputLocation">Location</label>
+        <input class="input-xlarge" type="text" id="inputLocation" placeholder="Location" name="location" value="<%= @event.location %>">
+
+        <label for="inputDesciption">Description</label>
+        <textarea class="input-xxlarge" rows="5" id="inputDesciption" placeholder="Description" name="description"><%= @event.description %></textarea>
+
+      </div>
+
+      <div class="tab-pane" id="Time">
+
+        <legend>Your time proposals</legend>
+        <span class="help-block">Click on the dates you would like to choose and select a time to add a new time proposal.</span>
+        <div class="row-fluid">
+          <div class="span5">
+            <ul id="choices" class="unstyled">
+              <% @event.choices.each do |choice| 
+                formattedStart = choice.start_time.strftime('%l:%M%P %a, %b %e, %Y');
+                formattedEnd = choice.end_time.strftime('%l:%M%P %a, %b %e, %Y');
+                %>
+                <li>
+                  <div class="input-prepend span12">
+                    <button class="btn" type="button"><i class="icon-trash"></i></button>
+                    <div class="input-prepend">
+                      <div>
+                        <input type="text" disabled value="<%= formattedStart %>">
+                        <input class="choice-start" type="hidden" value="<%= choice.start_time %>">
+                      </div>
+                      <div style="display:none;">
+                        <input type="text" disabled value="<%= formattedEnd %>">
+                        <input class="choice-end" type="hidden" value="<%= choice.end_time %>">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div id="calendar" class="span7"></div>
+        </div>
+
+      </div>
+
+      <div class="tab-pane" id="Invite">
+        <legend>Invitation information</legend>
+
+        <label for="inputEmails">Emails</label>
+        <textarea class="input-xxlarge" rows="5" id="inputEmails" placeholder="Emails you would like to send." name="emails"><%= @event.emails %></textarea>
+        <span class="help-block">Separate multiple e-mail recipients by commas(,).</span>
+
+        <button type="submit" class="btn">Finish</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>

@@ -34,11 +34,34 @@
 
 <div class="tabbable">
 	<ul class="nav nav-tabs" style="padding-top:10px; background-color:#f0f0f0; font-size:18px;">
-		<li class="active"><a href="#tab1" data-toggle="tab">choices</a></li>
-		<li><a href="#tab2" data-toggle="tab">administration</a></li>
+		<li class="active"><a href="#choices" data-toggle="tab">choices</a></li>
+		<% if @is_owner %>
+		<li><a href="#admin" data-toggle="tab">administration</a></li>
+		<% end %>
 	</ul>
 	<div class="tab-content" style="padding-left:10px;">
-		<div class="tab-pane active" id="tab1">
+		<div class="tab-pane active" id="choices">
+			<% if !@is_closed %>
+			<div style="float:right; margin-bottom:5px;">
+				<Button id="btnClose" class="btn" type="button">Close poll</Button>
+			</div>
+			<% else %>
+				<div class="alert alert-info">
+					<p style="font-weight:bold;">This event is closed.</p>
+					<% if @event.decision.nil? %>
+						This event has been closed. Participation is no longer possible.
+					<% else %>
+						<%= @event.user.name %> chose
+						<ul>
+						<% @event.decision.choices.each do |choice| %>
+							<li>
+								<%= choice.start_time.strftime("%A, %b %d, %Y %l:%M%p") %>
+							</li>
+						<% end %>
+						</ul>
+					<% end %>
+				</div>
+			<% end %>
 			<form id="show_form" action="/replies" method="post">
 				<table id="choices_table" class="table table-bordered">
 					<tbody>
@@ -93,7 +116,7 @@
 									end
 
 									%>
-									<th colspan="<%= count %>"><%= tmp.strftime("%a")+" " + tmp.day.to_s%></th>
+									<th class="day" colspan="<%= count %>"><%= tmp.strftime("%a")+" " + tmp.day.to_s%></th>
 									<%
 
 									if i < choices.length-1
@@ -109,7 +132,7 @@
 							<th></th>
 							<%
 							@event.choices.each do |choice|
-								%><th colspan="1"><%= choice.start_time.strftime("%l:%M %P") %></th><%
+								%><th class="time" colspan="1"><%= choice.start_time.strftime("%l:%M %P") %></th><%
 							end
 							%>
 						</tr>
@@ -138,6 +161,7 @@
 							<%
 						end
 						%>
+						<% if !@is_closed %>
 						<tr>
 							<td>
 								<input id="reply_name" type="text" name="name" maxlength="64" style="height:19px;margin-bottom:0px;padding:2px 6px 2px 6px;width:116px;">
@@ -152,6 +176,7 @@
 							end
 							%>
 						</tr>
+						<% end %>
 						<tr>
 							<td>
 							</td>
@@ -165,17 +190,68 @@
 						</tr>
 					</tbody>
 				</table>
-				<input type="hidden" name="event_id" value="<%= @event.id %>">
+				<input id="eventID"type="hidden" name="event_id" value="<%= @event.id %>">
+				<% if !@is_closed %>
 				<div>
 					<div style="float:right;">
 						<input class="btn" id="cantMakeIt" type="submit" value="Can't make it">
 						<input class="btn btn-primary" id="save" type="submit" value="Save">
 					</div>
 				</div>
+				<% end %>
 			</form>
 		</div>
-		<div class="tab-pane" id="tab2">
-			<p>Howdy, I'm in Section 2.</p>
+
+		<% if @is_owner %>
+		<div class="tab-pane" id="admin">
+			<h3 style="font-weight: normal;">Participation link</h3>
+			<input class="input-xlarge" type="text" value="<%= event_url(@event) %>" disabled >
+
+			<div style="margin-top:40px;">
+				<% if !@is_closed %>
+				<div class="input-prepend" style="width:100%;">
+					<span class="add-on icon-ok"></span>
+					<Button id="btnClose1"class="btn" type="button">close</Button>
+				</div>
+
+				<div class="input-prepend" style="width:100%;">
+					<span class="add-on icon-edit"></span>
+					<a id="btnEdit" class="btn" href="<%= edit_event_path(@event) %>">edit</a>
+				</div>
+				<% end %>
+
+				<div class="input-prepend" style="width:100%;">
+					<span class="add-on icon-file"></span>
+					<Button id="btnDuplicate" class="btn" type="button">duplicate</Button>
+				</div>
+
+				<div class="input-prepend" style="width:100%;">
+					<span class="add-on icon-trash"></span>
+					<Button id="btnDelete" class="btn" type="button">delete</Button>
+				</div>
+			</div>
 		</div>
+		<% end %>
 	</div>
 </div>
+
+<div id="closeEventWindow">
+	<div>
+		<h4 style="font-weight:normal;">Final decision</h4>
+	</div>
+	<form id="closeEventForm">
+		<input type="hidden" name="is_closed" value="true">
+		<div id="closeCheckContainer" style="float:left; height: 300px;">
+		</div>
+		<div style="float:right;">
+			<div id="plot"></div>
+			<div class="clearfix">
+				<div style="float:right;">
+					<Button id="cancelCloseEvent" class="btn" >cancel</Button>
+					<Button id="submitCloseEvent" type="submit" class="btn btn-primary" >save</Button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+<div id="page-cover"></div>

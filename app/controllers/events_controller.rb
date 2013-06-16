@@ -24,11 +24,17 @@ class EventsController < ApplicationController
 			end
 			I18n.locale = 'en'
 		else
-			@events = Event.scoped
-			@events = Event.between(params['start'], params['end']) if (params['start'] && params['end'])
+			@launched_events = current_user.events
+			@invited_events = []
+			current_user.invitations.each do |invitation|
+				@invited_events.push(invitation.event)
+			end
+			@launched_events.sort!{|a,b|b.updated_at <=> a.updated_at}
+			@invited_events.sort!{|a,b|b.updated_at <=> a.updated_at}
 		end
 
 		respond_to do |format|
+			format.html
 			format.json { 
 				if !params['launch'].nil? || !params['invited'].nil?
 					render 				:status => 200,
@@ -46,15 +52,16 @@ class EventsController < ApplicationController
 		@event = Event.find(params[:id])
 
 		invitations = @event.invitations
-		@replies_count = 0;
-		1.upto(invitations.length) do |i|
-			@replies_count += 1 unless invitations[i-1].reply.nil?
-		end
+		@replies_count = @event.replies.count
 
 		# wait for implement
 		@comments_count = 0;
 
 		@latest_activity = @event.updated_at
+
+		@is_owner = current_user == @event.user
+
+		@is_closed = @event.is_closed;
 
 		respond_to do |format|
 			format.json {
@@ -65,7 +72,7 @@ class EventsController < ApplicationController
 						names.push(reply.name)
 					end
 					choices[choice.number] = {
-						'time' => choice.start_time.strftime('%Y-%m-%d\n%I:%M %p'),
+						'time' => choice.start_time.strftime('%Y-%m-%d\n%I:%M%p'),
 						'count' => choice.replies.size,
 						'names' => names
 					}
@@ -97,6 +104,7 @@ class EventsController < ApplicationController
 		event.end = Time.now
 		event.all_day = false
 		event.user = current_user
+		event.emails = params[:emails]
 
 		choices_count = params[:'choices-count'].to_i
 		1.upto(choices_count) do |i|
@@ -157,10 +165,24 @@ class EventsController < ApplicationController
 		@event = Event.find(params[:id])
 		if !params['is_closed'].nil?
 			@event.is_closed = params['is_closed']
+
+			if params['decision-count'].to_i > 0
+				decisions = @event.build_decision
+				@event.choices.each do |choice|
+					if !params['decision-'+choice.number.to_s].nil?
+						decisions.choices << choice
+					end
+				end
+				decisions.save
+			end
+
 			@event.save
 		end
 
 		respond_to do |format|
+			format.html {
+				redirect_to event_path(@event)
+			}
 			format.json {
 				render :status => 200,
 						   :json   => { :success => true,
@@ -168,6 +190,11 @@ class EventsController < ApplicationController
 											    }
 			}
 		end
+	end
+
+	def edit
+		@event = Event.find(params[:id])
+
 	end
 
 	def notification

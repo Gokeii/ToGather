@@ -13,5 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jqplot
+//= require jqplot/plugins/barRenderer
+//= require jqplot/plugins/categoryAxisRenderer
+//= require jqplot/plugins/pointLabels
 //= require fullcalendar
 //= require twitter/bootstrap

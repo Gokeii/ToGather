@@ -1,3 +1,22 @@
 <%= javascript_include_tag params[:controller] %>
-<h1>Welcome</h1>
-<div id='calendar'></div>
+<div id="pollsSubHeader">
+	<h3>Create new poll</h3>
+	<div id="buttonContainer">
+		<div id="scheduleButton">
+			<img src="/assets/schedule.png" style="width:70px; padding-right:20px;">
+			<a class="btn btn-info">Schedule an event</a>
+		</div>
+	</div>
+</div>
+<div class="headerDivider"></div>
+<div>
+	<h3>Your polls</h3>
+	<table style="width:800px;">
+		<tr>
+			<th>Subject</th>
+			<th>Participants</th>
+			<th>Latest activity</th>
+		</tr>
+		
+	</table>
+</div>
