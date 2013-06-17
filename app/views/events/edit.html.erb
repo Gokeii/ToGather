@@ -1,7 +1,7 @@
 <%= javascript_include_tag params[:controller] %>
 
-<form id="edit_form" class="form">
-
+<form id="edit_form" class="form" action="/events/<%= @event.id %>" method="post">
+  <input type="hidden" value="put" name="_method">
   <div class="tabbable tabs-left">
 
     <ul class="nav nav-tabs">
@@ -17,13 +17,13 @@
         <legend>General information</legend>
 
         <label for="inputTitle">Title</label>
-        <input class="input-xlarge" type="text" id="inputTitle" placeholder="Title" name="title" value="<%= @event.title %>">
+        <input class="input-xlarge" type="text" id="inputTitle" placeholder="Title" name="event[title]" value="<%= @event.title %>">
 
         <label for="inputLocation">Location</label>
-        <input class="input-xlarge" type="text" id="inputLocation" placeholder="Location" name="location" value="<%= @event.location %>">
+        <input class="input-xlarge" type="text" id="inputLocation" placeholder="Location" name="event[location]" value="<%= @event.location %>">
 
         <label for="inputDesciption">Description</label>
-        <textarea class="input-xxlarge" rows="5" id="inputDesciption" placeholder="Description" name="description"><%= @event.description %></textarea>
+        <textarea class="input-xxlarge" rows="5" id="inputDesciption" placeholder="Description" name="event[description]"><%= @event.description %></textarea>
 
       </div>
 
@@ -65,7 +65,7 @@
         <legend>Invitation information</legend>
 
         <label for="inputEmails">Emails</label>
-        <textarea class="input-xxlarge" rows="5" id="inputEmails" placeholder="Emails you would like to send." name="emails"><%= @event.emails %></textarea>
+        <textarea class="input-xxlarge" rows="5" id="inputEmails" placeholder="Emails you would like to send." name="event[emails]"><%= @event.emails %></textarea>
         <span class="help-block">Separate multiple e-mail recipients by commas(,).</span>
 
         <button type="submit" class="btn">Finish</button>

@@ -55,13 +55,15 @@ class EventsController < ApplicationController
 		@replies_count = @event.replies.count
 
 		# wait for implement
-		@comments_count = 0;
+		@comments_count = @event.root_comments.count
+
+		@comments = @event.root_comments
 
 		@latest_activity = @event.updated_at
 
 		@is_owner = current_user == @event.user
 
-		@is_closed = @event.is_closed;
+		@is_closed = @event.is_closed
 
 		respond_to do |format|
 			format.json {
@@ -129,6 +131,7 @@ class EventsController < ApplicationController
 
 		event.save
 
+		#push notification to android end if user invited have device registered
 		api_key = 'AIzaSyBjg1TQV-puS06AAREhRnkFj2edW6dPtoE'
 		gcm = GCM.new(api_key)
 		registration_ids = []
@@ -163,6 +166,8 @@ class EventsController < ApplicationController
 
 	def update
 		@event = Event.find(params[:id])
+
+		#close poll
 		if !params['is_closed'].nil?
 			@event.is_closed = params['is_closed']
 
@@ -177,6 +182,38 @@ class EventsController < ApplicationController
 			end
 
 			@event.save
+
+		#edit poll
+		else
+			origin_emails = @event.emails
+			@event.update_attributes(params[:event])
+			emails = @event.emails
+
+			choices_count = params[:'choices-count'].to_i
+			choices = @event.choices
+			index = 0
+			count = choices.count
+			1.upto(choices_count) do |i|
+				start_time = params["choice-start-"+i.to_s]
+				end_time = params["choice-end-"+i.to_s]
+				
+				while index < count && start_time > choices[index].start_time
+					index += 1
+				end
+
+				unless index < count && !(start_time < choices[index].start_time)
+					choice = @event.choices.build
+					choice.start_time = start_time
+					choice.end_time = end_time
+					choices.insert(index, choice)
+					count += 1
+				end
+			end
+
+			1.upto(count) do |i|
+				choices[i-1].number = i
+				choices[i-1].save
+			end
 		end
 
 		respond_to do |format|
@@ -194,7 +231,6 @@ class EventsController < ApplicationController
 
 	def edit
 		@event = Event.find(params[:id])
-
 	end
 
 	def notification

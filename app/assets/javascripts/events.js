@@ -273,9 +273,42 @@ $('#submitCloseEvent').click(function() {
 	return false;
 })
 
+/* comment part */
+$('div').focus(function () {
+	if ($(this).children(":first").html() == "Leave a message...") {
+		$(this).html("<p><br></p>");
+		$(this).caret(" ");
+	}
+})
+
+$('div').blur(function () {
+	if ($(this).children(":first").html() == "<br>")
+		$(this).html('<span class="placeholder">Leave a message...</span>');	
+})
+
+$('#submitComment').click(function() {
+	var dataObj = {};
+	dataObj['event_id'] = $('#eventID').val();
+	//dataObj['user_id'] = current_user.id;
+	dataObj['content'] = $('#content').children(":first").html();
+	$.ajax({
+		url: '/comments',
+		dataType: 'html',
+		Accept: 'json',
+		type: 'post',
+		data: dataObj,
+		success: function(result) {
+			location.reload();
+    }
+	});
+
+	return false;
+})
+
 /**************************edit: process before form submit**************************/
 $('#edit_form').submit(function() {
 	var count = 1;
+	
 	$('.choice-start').each(function() {
 		$(this).attr('name', 'choice-start-' + count);
 		count++;

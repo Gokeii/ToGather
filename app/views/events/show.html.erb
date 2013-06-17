@@ -3,6 +3,25 @@
 <div style="padding-left:10px;background-color:#f0f0f0">
 	<h2><%= @event.title %></h2>
 	<div class="clearfix" style="color:#6f6f6f">
+		<% if !@is_owner %>
+		<div style="float:left;">
+			<span>Poll inithiated by <%= @event.user.name %></span>
+		</div>
+
+		<% else %>
+			<% if @is_closed %>
+				<div style="float:left;">
+					<span>Poll closed</span>
+				</div>
+			<% else %>
+				<div style="float:left;">
+					<a href="/events/<%= @event.id %>/edit">Edit your poll</a>
+				</div>
+			<% end %>
+		<% end %>
+
+		<span style="padding:0 5px; float:left;"> | </span>
+
 		<div style="float:left;" title="<%= @replies_count %> participants">
 			<i class="icon-user"></i>
 			<span><%= @replies_count %></span>
@@ -46,21 +65,21 @@
 				<Button id="btnClose" class="btn" type="button">Close poll</Button>
 			</div>
 			<% else %>
-				<div class="alert alert-info">
-					<p style="font-weight:bold;">This event is closed.</p>
-					<% if @event.decision.nil? %>
-						This event has been closed. Participation is no longer possible.
-					<% else %>
-						<%= @event.user.name %> chose
-						<ul>
-						<% @event.decision.choices.each do |choice| %>
-							<li>
-								<%= choice.start_time.strftime("%A, %b %d, %Y %l:%M%p") %>
-							</li>
-						<% end %>
-						</ul>
+			<div class="alert alert-info">
+				<p style="font-weight:bold;">This event is closed.</p>
+				<% if @event.decision.nil? %>
+				This event has been closed. Participation is no longer possible.
+				<% else %>
+				<%= @event.user.name %> chose
+				<ul>
+					<% @event.decision.choices.each do |choice| %>
+					<li>
+						<%= choice.start_time.strftime("%A, %b %d, %Y %l:%M%p") %>
+					</li>
 					<% end %>
-				</div>
+				</ul>
+				<% end %>
+			</div>
 			<% end %>
 			<form id="show_form" action="/replies" method="post">
 				<table id="choices_table" class="table table-bordered">
@@ -200,58 +219,149 @@
 				</div>
 				<% end %>
 			</form>
-		</div>
 
-		<% if @is_owner %>
-		<div class="tab-pane" id="admin">
-			<h3 style="font-weight: normal;">Participation link</h3>
-			<input class="input-xlarge" type="text" value="<%= event_url(@event) %>" disabled >
+			<div id="comment-area">
+				<h3><%= @comments_count %> Comments</h3>
 
-			<div style="margin-top:40px;">
-				<% if !@is_closed %>
-				<div class="input-prepend" style="width:100%;">
-					<span class="add-on icon-ok"></span>
-					<Button id="btnClose1"class="btn" type="button">close</Button>
+				<div class="accordion" id="accordion">
+					<div class="accordion-group">
+						<div class="accordion-heading">
+							<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#addAComment">
+								Add a comment
+							</a>
+						</div>
+						<div id="addAComment" class="accordion-body collapse">
+							<div class="accordion-inner">					
+								<div class="postbox">
+									<div class="avatar">
+										<% if current_user.nil? %>
+											<image src="/assets/default_gravatar.jpg">
+										<% else %>
+											<%= image_tag current_user.gravatar_url %>
+										<% end %>
+									</div>
+
+									<form id="comment_form">
+										<div class="textarea-wrapper">
+											<div id="content" class="textarea" contenteditable="true" tabindex="0" style="overflow: auto; max-height: 350px;">
+												<span class="placeholder">Leave a message...</span>
+											</div>
+
+											<div class="post-actions">
+
+												<button id="submitComment" type="submit" class="btn">
+													<% if current_user.nil? %>
+													Post
+													<% else %>
+													Post as 
+													<span><%= current_user.name %></span>
+													<% end %>
+												</button>
+												<% if current_user.nil? %>
+												<input name="name" type="text" style="float:right; margin-right: 60px; margin-top:2px;">
+												<span style="float:right; padding-top: 5px; margin-right: 10px;">name</span>
+												<% end %>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 
-				<div class="input-prepend" style="width:100%;">
-					<span class="add-on icon-edit"></span>
-					<a id="btnEdit" class="btn" href="<%= edit_event_path(@event) %>">edit</a>
-				</div>
-				<% end %>
+					<ul id="post-list" class="post-list">		
+						<% 1.upto(@comments_count) do |i| %>
+						<li class="post">
+							<div class="post-content">
+								<div class="avatar hovercard">
+									<%= image_tag @comments[i-1].user.gravatar_url %>
+								</div>
 
-				<div class="input-prepend" style="width:100%;">
-					<span class="add-on icon-file"></span>
-					<Button id="btnDuplicate" class="btn" type="button">duplicate</Button>
-				</div>
+								<div class="post-body">
+									<header>
 
-				<div class="input-prepend" style="width:100%;">
-					<span class="add-on icon-trash"></span>
-					<Button id="btnDelete" class="btn" type="button">delete</Button>
+										<span class="publisher-anchor-color">
+											<span> <%= @comments[i-1].user.name %> </span>
+										</span>
+
+										<span class="bullet" aria-hidden="true">•</span>
+
+										<span class="time-ago" title="<%= @comments[i-1].updated_at %>"><%= time_ago_in_words(@comments[i-1].updated_at) %></span>
+
+									</header>
+
+									<!-- Use message-container to manage visible height of the post message (including media) -->
+									<div class="post-message-container">
+										<!-- Use message-content to measure post content (including media) -->
+										<div>
+											<div class="post-message publisher-anchor-color ">
+												<%= @comments[i-1].body %>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<% end %>
+					</ul>
 				</div>
 			</div>
+
+			<% if @is_owner %>
+			<div class="tab-pane" id="admin">
+				<h3 style="font-weight: normal;">Participation link</h3>
+				<input class="input-xlarge" type="text" value="<%= event_url(@event) %>" disabled >
+
+				<div style="margin-top:40px;">
+					<% if !@is_closed %>
+					<div class="input-prepend" style="width:100%;">
+						<span class="add-on icon-ok"></span>
+						<Button id="btnClose1"class="btn" type="button">close</Button>
+					</div>
+
+					<div class="input-prepend" style="width:100%;">
+						<span class="add-on icon-edit"></span>
+						<a id="btnEdit" class="btn" href="<%= edit_event_path(@event) %>">edit</a>
+					</div>
+					<% end %>
+
+					<div class="input-prepend" style="width:100%;">
+						<span class="add-on icon-file"></span>
+						<Button id="btnDuplicate" class="btn" type="button">duplicate</Button>
+					</div>
+
+					<div class="input-prepend" style="width:100%;">
+						<span class="add-on icon-trash"></span>
+						<Button id="btnDelete" class="btn" type="button">delete</Button>
+					</div>
+				</div>
+			</div>
+			<% end %>
 		</div>
-		<% end %>
 	</div>
+
+	<div id="closeEventWindow">
+		<div>
+			<h4 style="font-weight:normal;">Final decision</h4>
+		</div>
+		<form id="closeEventForm">
+			<input type="hidden" name="is_closed" value="true">
+			<div id="closeCheckContainer" style="float:left; height: 300px;">
+			</div>
+			<div style="float:right;">
+				<div id="plot"></div>
+				<div class="clearfix">
+					<div style="float:right;">
+						<Button id="cancelCloseEvent" class="btn" >cancel</Button>
+						<Button id="submitCloseEvent" type="submit" class="btn btn-primary" >save</Button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+
 </div>
-
-<div id="closeEventWindow">
-	<div>
-		<h4 style="font-weight:normal;">Final decision</h4>
-	</div>
-	<form id="closeEventForm">
-		<input type="hidden" name="is_closed" value="true">
-		<div id="closeCheckContainer" style="float:left; height: 300px;">
-		</div>
-		<div style="float:right;">
-			<div id="plot"></div>
-			<div class="clearfix">
-				<div style="float:right;">
-					<Button id="cancelCloseEvent" class="btn" >cancel</Button>
-					<Button id="submitCloseEvent" type="submit" class="btn btn-primary" >save</Button>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
 <div id="page-cover"></div>

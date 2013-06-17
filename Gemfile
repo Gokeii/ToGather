@@ -13,6 +13,8 @@ gem 'pg'
 gem 'devise'
 gem 'fullcalendar-rails'
 gem 'gcm'
+gem 'acts_as_commentable_with_threading'
+gem 'gravtastic'
 
 
 # Gems used only for assets and not required
