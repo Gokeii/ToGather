@@ -7,7 +7,7 @@ $(document).ready(function() {
 	}
 
 	$('.launched-more').hide();
-	$('.invited-more').hide();
+	$('.participated-more').hide();
 	/*************************event index part**********************************/
 	$('#btnMoreLaunched').click(function() {
 		$('.launched-more').toggle('slow');
@@ -17,8 +17,8 @@ $(document).ready(function() {
 			$(this).html('More');
 	})
 
-	$('#btnMoreInvited').click(function() {
-		$('.invited-more').toggle('slow');
+	$('#btnMoreParticipated').click(function() {
+		$('.participated-more').toggle('slow');
 		if ($(this).html() == 'More')
 			$(this).html('Less');
 		else 
@@ -291,6 +291,7 @@ $('#submitComment').click(function() {
 	dataObj['event_id'] = $('#eventID').val();
 	//dataObj['user_id'] = current_user.id;
 	dataObj['content'] = $('#content').children(":first").html();
+	dataObj['user_name'] = $('#user_name').val();
 	$.ajax({
 		url: '/comments',
 		dataType: 'html',

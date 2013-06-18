@@ -25,12 +25,21 @@ class EventsController < ApplicationController
 			I18n.locale = 'en'
 		else
 			@launched_events = current_user.events
-			@invited_events = []
-			current_user.invitations.each do |invitation|
-				@invited_events.push(invitation.event)
+			# @invited_events = []
+			# current_user.invitations.each do |invitation|
+			# 	@invited_events.push(invitation.event)
+			# end
+
+			@participated_events = []
+			current_user.replies.each do |reply|
+				unless @participated_events.include? reply.event
+					@participated_events.push(reply.event)
+				end
 			end
+
 			@launched_events.sort!{|a,b|b.updated_at <=> a.updated_at}
-			@invited_events.sort!{|a,b|b.updated_at <=> a.updated_at}
+			# @invited_events.sort!{|a,b|b.updated_at <=> a.updated_at}
+			@participated_events.sort!{|a,b|b.updated_at <=> a.updated_at}
 		end
 
 		respond_to do |format|
@@ -58,6 +67,7 @@ class EventsController < ApplicationController
 		@comments_count = @event.root_comments.count
 
 		@comments = @event.root_comments
+		@comments.sort!{|a,b|b.updated_at <=> a.updated_at}
 
 		@latest_activity = @event.updated_at
 
@@ -147,7 +157,9 @@ class EventsController < ApplicationController
 			Rails.logger.debug('debug::' + response.to_json)
 		end
 
-		UserMailer.invite(current_user, emails, event.title, event.description, event_url(event)).deliver
+		if emails.strip.length != 0
+			UserMailer.invite(current_user, emails, event.title, event.description, event_url(event)).deliver
+		end
 
 		respond_to do |format|
 			format.json {
@@ -185,9 +197,32 @@ class EventsController < ApplicationController
 
 		#edit poll
 		else
-			origin_emails = @event.emails
 			@event.update_attributes(params[:event])
 			emails = @event.emails
+			emailList = []
+			@event.invitations.each do |invitation|
+				emailList.push(invitation.email)
+			end
+			newEmailList = @event.emails.split(',')
+			sendList = ''
+			newEmailList.each do |email|
+				unless emailList.include? email
+					sendList += email + ','
+
+					invitation = @event.invitations.build
+					invitation.email = email
+					invitee = User.where(:email => email).first
+					if !invitee.nil?
+						invitation.user = invitee
+					end
+					invitation.save
+				end
+			end
+
+			if sendList.strip.length != 0
+			UserMailer.invite(current_user, sendList, @event.title, @event.description, event_url(@event)).deliver
+		end
+
 
 			choices_count = params[:'choices-count'].to_i
 			choices = @event.choices

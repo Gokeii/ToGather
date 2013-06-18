@@ -61,9 +61,11 @@
 	<div class="tab-content" style="padding-left:10px;">
 		<div class="tab-pane active" id="choices">
 			<% if !@is_closed %>
-			<div style="float:right; margin-bottom:5px;">
-				<Button id="btnClose" class="btn" type="button">Close poll</Button>
-			</div>
+				<% if @is_owner %>
+					<div style="float:right; margin-bottom:5px;">
+						<Button id="btnClose" class="btn" type="button">Close poll</Button>
+					</div>
+				<% end %>
 			<% else %>
 			<div class="alert alert-info">
 				<p style="font-weight:bold;">This event is closed.</p>
@@ -258,7 +260,7 @@
 													<% end %>
 												</button>
 												<% if current_user.nil? %>
-												<input name="name" type="text" style="float:right; margin-right: 60px; margin-top:2px;">
+												<input id="user_name" name="name" type="text" style="float:right; margin-right: 60px; margin-top:2px;">
 												<span style="float:right; padding-top: 5px; margin-right: 10px;">name</span>
 												<% end %>
 											</div>
@@ -282,7 +284,11 @@
 									<header>
 
 										<span class="publisher-anchor-color">
-											<span> <%= @comments[i-1].user.name %> </span>
+											<% if @comments[i-1].user.id == 0 %>
+												<span> <%= @comments[i-1].user_name %> </span>
+											<% else %>
+												<span> <%= @comments[i-1].user.name %> </span>
+											<% end %>
 										</span>
 
 										<span class="bullet" aria-hidden="true">•</span>

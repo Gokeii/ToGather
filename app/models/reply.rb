@@ -4,4 +4,5 @@ class Reply < ActiveRecord::Base
   has_many :choices, :through => :choice_replyships
   belongs_to :invitation
   belongs_to :event
+  belongs_to :user
 end

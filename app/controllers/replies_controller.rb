@@ -3,6 +3,9 @@ class RepliesController < ApplicationController
 		@event = Event.find(params[:event_id])
 		@reply = @event.replies.build
 		@reply.name = params[:name]
+		unless current_user.nil?
+			@reply.user = current_user
+		end
 		@reply.save
 
 		chosen = params[:choices]

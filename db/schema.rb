@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130616155927) do
+ActiveRecord::Schema.define(:version => 20130618080207) do
 
   create_table "choice_replyships", :force => true do |t|
     t.integer  "choice_id"
@@ -37,12 +37,13 @@ ActiveRecord::Schema.define(:version => 20130616155927) do
     t.string   "title",            :default => ""
     t.text     "body",             :default => ""
     t.string   "subject",          :default => ""
-    t.integer  "user_id",          :default => 0,  :null => false
+    t.integer  "user_id",          :default => 0
     t.integer  "parent_id"
     t.integer  "lft"
     t.integer  "rgt"
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
+    t.string   "user_name"
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
@@ -93,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20130616155927) do
     t.datetime "updated_at",    :null => false
     t.integer  "invitation_id"
     t.integer  "event_id"
+    t.integer  "user_id"
   end
 
   create_table "users", :force => true do |t|

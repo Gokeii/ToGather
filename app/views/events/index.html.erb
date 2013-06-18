@@ -54,12 +54,14 @@
 		</tbody>
 
 	</table>
+	<% if count > 4 %>
 		<Button id="btnMoreLaunched"class="pull-right btn">More</Button>
+	<% end %>
 </div>
 
 <div>
 	<h3>Polls that you have participated in</h3>
-	<table id="tableInvited"class="table table-hover" style="width:940px; table-layout:fixed;">
+	<table id="tableParticipated"class="table table-hover" style="width:940px; table-layout:fixed;">
 		<thead>
 			<tr>
 				<th style="width:25px;"></th>
@@ -73,7 +75,7 @@
 		<tbody>
 		<%
 		count = 0 
-		@invited_events.each do |event| 
+		@participated_events.each do |event| 
 			if count < 4
 				if event.is_closed %>
 				<tr class="warning">
@@ -84,10 +86,10 @@
 			<% end
 			else
 				if event.is_closed %>
-				<tr class="warning invited-more">
+				<tr class="warning participated-more">
 					<td><i class="icon-ok"></i></td>
 			<% else %>
-				<tr class="success invited-more">
+				<tr class="success participated-more">
 					<td><i class="icon-time"></i></td>
 			<% end
 			end %>
@@ -102,5 +104,7 @@
 		</tbody>
 
 	</table>
-		<Button id="btnMoreInvited"class="pull-right btn">More</Button>
+	<% if count > 4 %>
+		<Button id="btnMoreParticipated"class="pull-right btn">More</Button>
+	<% end %>
 </div>

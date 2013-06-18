@@ -1,13 +1,18 @@
 class CommentsController < ApplicationController
 	def create
 		event = Event.find(params['event_id'])
-		if params['user_name'].nil?
+		content = params['content']
+
+		if  !current_user.nil?
 			user_id = current_user.id
 		else 
-			a = 'a'
+			user_id = 0
 		end
-		content = params['content']
 		comment = Comment.build_from(event, user_id, content)
+
+		unless params['user_name'].nil?
+			comment.user_name = params['user_name']			
+		end
 		comment.save
 
 		respond_to do |format|

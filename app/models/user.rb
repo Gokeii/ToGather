@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_one :device
   has_many :events
   has_many :invitations
+  has_many :replies
 
   before_save :ensure_authentication_token
 
